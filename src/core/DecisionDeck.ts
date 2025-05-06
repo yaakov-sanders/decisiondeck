@@ -63,4 +63,21 @@ export abstract class DecisionDeck<T extends BaseCardData> {
     const initialCards = await this.fetchNextPage();
     this.addCards(initialCards);
   }
+
+  // Swipe handlers
+  async swipeLeft(): Promise<void> {
+    const currentCard = this.getCurrentCard();
+    if (currentCard) {
+      await this.handleSwipeLeft(currentCard);
+      this.advance();
+    }
+  }
+
+  async swipeRight(): Promise<void> {
+    const currentCard = this.getCurrentCard();
+    if (currentCard) {
+      await this.handleSwipeRight(currentCard);
+      this.advance();
+    }
+  }
 } 

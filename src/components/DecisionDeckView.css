@@ -1,0 +1,51 @@
+.decision-deck-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.decision-deck-container {
+  width: 300px;
+  height: 400px;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.decision-deck-counter {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.decision-deck-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.decision-deck-controls button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #646cff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.decision-deck-controls button:hover {
+  background-color: #535bf2;
+}
+
+.decision-deck-loading,
+.decision-deck-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.5rem;
+  color: #666;
+} 
