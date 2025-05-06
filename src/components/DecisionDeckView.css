@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  justify-content: center;
   min-height: 100vh;
-  background-color: #f0f0f0;
+  width: 100vw;
+  background-color: #181a20;
+  gap: 2rem;
 }
 
 .decision-deck-container {
@@ -14,15 +16,85 @@
   position: relative;
 }
 
+.decision-deck-outer {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #181a20;
+}
+
+.decision-deck-center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .decision-deck-counter {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #333;
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  opacity: 0.85;
+  letter-spacing: 0.01em;
+}
+
+.decision-deck-stack {
+  position: relative;
+  width: 320px;
+  height: 440px;
+  margin: 0 0 2.2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.decision-deck-card {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 320px;
+  height: 440px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  transform: translateY(-50%);
+}
+
+.playing-card {
+  width: 90%;
+  height: 90%;
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding: 0;
+  position: relative;
+}
+
+.card-value {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card-suit {
+  font-size: 4rem;
 }
 
 .decision-deck-controls {
   display: flex;
-  gap: 1rem;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
 }
 
 .decision-deck-controls button {
@@ -40,6 +112,26 @@
   background-color: #535bf2;
 }
 
+.swipe-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.swipe-btn:active {
+  box-shadow: 0 0 0 4px rgba(100, 108, 255, 0.15);
+}
+
 .decision-deck-loading,
 .decision-deck-empty {
   display: flex;
@@ -48,4 +140,89 @@
   min-height: 100vh;
   font-size: 1.5rem;
   color: #666;
+}
+
+.modern-deck-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: #181a20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-deck-center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-deck-stack {
+  position: relative;
+  width: 320px;
+  height: 440px;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-deck-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 440px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.10);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card-back {
+  background: #f5f5f5;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.card-front {
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modern-card-content {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-deck-controls {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.modern-swipe-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.modern-swipe-btn:active {
+  box-shadow: 0 0 0 6px rgba(100, 108, 255, 0.10);
 } 
