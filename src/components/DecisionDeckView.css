@@ -225,4 +225,15 @@
 
 .modern-swipe-btn:active {
   box-shadow: 0 0 0 6px rgba(100, 108, 255, 0.10);
+}
+
+.stack-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 } 

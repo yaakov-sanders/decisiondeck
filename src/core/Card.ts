@@ -2,14 +2,10 @@ import type { ComponentType } from 'react';
 
 export interface CardMetadata {
   id: string;
-  type: string;
-  timestamp: number;
 }
 
 export interface BaseCardData {
   id: string;
-  type: string;
-  timestamp: number;
 }
 
 export abstract class Card<T extends BaseCardData> {
@@ -20,14 +16,12 @@ export abstract class Card<T extends BaseCardData> {
   }
   
   // Get the React component that renders this card
-  abstract getCardComponent(): ComponentType;
+  abstract getCardComponent(): ComponentType<{ cardData: T }>;
   
   // Get card metadata for animations/transitions
   getMetadata(): CardMetadata {
     return {
-      id: this.data.id,
-      type: this.data.type,
-      timestamp: this.data.timestamp
+      id: this.data.id
     };
   }
 

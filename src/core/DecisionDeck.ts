@@ -6,7 +6,7 @@ export abstract class DecisionDeck<T extends BaseCardData> {
   protected readonly pageSize: number;
   private readonly preloadThreshold: number;
   
-  constructor(pageSize: number = 5, preloadThreshold: number = 2) {
+  constructor(pageSize: number = 10, preloadThreshold: number = 5) {
     this.pageSize = pageSize;
     this.preloadThreshold = preloadThreshold;
   }
@@ -79,5 +79,10 @@ export abstract class DecisionDeck<T extends BaseCardData> {
       await this.handleSwipeRight(currentCard);
       this.advance();
     }
+  }
+
+  // Get the number of remaining cards
+  public getRemainingCards(): number {
+    return this.cards.length - this.currentIndex;
   }
 } 

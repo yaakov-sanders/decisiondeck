@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card } from '../core/Card';
 import type { BaseCardData } from '../core/Card';
 import { DecisionDeck } from '../core/DecisionDeck';
@@ -58,6 +58,30 @@ export function DecisionDeckView<T extends BaseCardData>({
     }
   };
 
+  // Extracted render function for stack cards
+  const renderStackCard = useCallback((card: Card<T>, idx: number) => {
+    const CardComponent = card.getCardComponent();
+    // Stack offsets: bottom card is furthest back
+    const offsets = [
+      { z: 3, t: 'translate(0, 0) scale(1)' },
+      { z: 2, t: 'translate(-16px, 8px) scale(0.98)' },
+      { z: 1, t: 'translate(-32px, 16px) scale(0.96)' },
+    ];
+    const { z, t } = offsets[idx] || offsets[2];
+    return (
+      <div
+        key={card.getMetadata().id}
+        className="stack-card"
+        style={{
+          zIndex: z,
+          transform: t
+        }}
+      >
+        <CardComponent cardData={card.getData()} />
+      </div>
+    );
+  }, []);
+
   if (isLoading) {
     return <div className="decision-deck-loading">Loading...</div>;
   }
@@ -72,37 +96,7 @@ export function DecisionDeckView<T extends BaseCardData>({
       <div className="modern-deck-center-col">
         <div className="modern-deck-stack">
           {/* Render up to 3 cards for the stack effect, last card visually on top */}
-          {topCards.map((card, idx) => {
-            const CardComponent = card.getCardComponent();
-            // Stack offsets: bottom card is furthest back
-            const offsets = [
-              { z: 3, t: 'translate(0, 0) scale(1)' },
-              { z: 2, t: 'translate(-16px, 8px) scale(0.98)' },
-              { z: 1, t: 'translate(-32px, 16px) scale(0.96)' },
-            ];
-            const { z, t } = offsets[idx] || offsets[2];
-            return (
-              <div
-                key={card.getMetadata().id}
-                className={`modern-deck-card ${idx === topCards.length - 1 ? 'card-front' : 'card-back'}`}
-                style={{
-                  zIndex: z,
-                  transform: t,
-                  width: 320,
-                  height: 440,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: idx === topCards.length - 1 ? '#fff' : '#f5f5f5',
-                  borderRadius: 20
-                }}
-              >
-                <div className="modern-card-content">
-                  <CardComponent />
-                </div>
-              </div>
-            );
-          })}
+          {topCards.map(renderStackCard)}
         </div>
         <div className="modern-deck-controls">
           <button className="modern-swipe-btn swipe-left" onClick={handleSwipeLeft} aria-label="Swipe Left">
