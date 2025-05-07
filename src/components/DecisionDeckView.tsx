@@ -3,19 +3,17 @@ import { Card } from '../core/Card';
 import type { BaseCardData } from '../core/Card';
 import { DecisionDeck } from '../core/DecisionDeck';
 import './DecisionDeckView.css';
+import EmptyState from './EmptyState';
 
 interface DecisionDeckViewProps<T extends BaseCardData> {
   deck: DecisionDeck<T>;
-  className?: string;
 }
 
 export function DecisionDeckView<T extends BaseCardData>({
-  deck,
-  className = ''
+  deck
 }: DecisionDeckViewProps<T>) {
   const [currentCard, setCurrentCard] = useState<Card<T> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [remainingCards, setRemainingCards] = useState(0);
 
   useEffect(() => {
     const initializeDeck = async () => {
@@ -23,7 +21,6 @@ export function DecisionDeckView<T extends BaseCardData>({
         await deck.authenticate();
         await deck.initialize();
         setCurrentCard(deck.getCurrentCard());
-        setRemainingCards(deck.getRemainingCards());
         setIsLoading(false);
       } catch (error) {
         console.error('Failed to initialize deck:', error);
@@ -46,7 +43,6 @@ export function DecisionDeckView<T extends BaseCardData>({
     if (currentCard) {
       await deck.swipeLeft();
       setCurrentCard(deck.getCurrentCard());
-      setRemainingCards(deck.getRemainingCards());
     }
   };
 
@@ -54,7 +50,6 @@ export function DecisionDeckView<T extends BaseCardData>({
     if (currentCard) {
       await deck.swipeRight();
       setCurrentCard(deck.getCurrentCard());
-      setRemainingCards(deck.getRemainingCards());
     }
   };
 
@@ -82,18 +77,14 @@ export function DecisionDeckView<T extends BaseCardData>({
     );
   }, []);
 
+  let content;
   if (isLoading) {
-    return <div className="decision-deck-loading">Loading...</div>;
-  }
-
-  if (!currentCard) {
-    return <div className="decision-deck-empty">No more cards!</div>;
-  }
-
-  // Modern, pixel-perfect rendering
-  return (
-    <div className="modern-deck-bg">
-      <div className="modern-deck-center-col">
+    content = <div className="decision-deck-loading">Loading...</div>;
+  } else if (!false) {
+    content = <EmptyState />;
+  } else {
+    content = (
+      <>
         <div className="modern-deck-stack">
           {/* Render up to 3 cards for the stack effect, last card visually on top */}
           {topCards.map(renderStackCard)}
@@ -113,6 +104,14 @@ export function DecisionDeckView<T extends BaseCardData>({
             </svg>
           </button>
         </div>
+      </>
+    );
+  }
+
+  return (
+    <div className="modern-deck-bg">
+      <div className="modern-deck-center-col">
+        {content}
       </div>
     </div>
   );
