@@ -80,7 +80,7 @@ export function DecisionDeckView<T extends BaseCardData>({
   let content;
   if (isLoading) {
     content = <div className="decision-deck-loading">Loading...</div>;
-  } else if (!false) {
+  } else if (!currentCard) {
     content = <EmptyState />;
   } else {
     content = (
