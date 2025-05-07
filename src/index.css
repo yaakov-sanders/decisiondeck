@@ -1,11 +1,42 @@
 :root {
+  /* Light theme variables (default) */
+  --background-primary: #ffffff;
+  --background-secondary: #f9f9f9;
+  --text-primary: #213547;
+  --text-secondary: rgba(0, 0, 0, 0.87);
+  --accent-primary: #646cff;
+  --accent-hover: #747bff;
+  --button-bg: #f9f9f9;
+  --button-border: transparent;
+  --button-hover: #747bff;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+}
+
+[data-theme="dark"] {
+  --background-primary: #242424;
+  --background-secondary: #1a1a1a;
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent-primary: #646cff;
+  --accent-hover: #535bf2;
+  --button-bg: #1a1a1a;
+  --button-border: transparent;
+  --button-hover: #646cff;
+  --card-bg: #2a2a2a;
+  --card-shadow: rgba(0, 0, 0, 0.2);
+
+}
+
+:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,11 +46,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--accent-primary);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--accent-hover);
 }
 
 body {
@@ -28,6 +59,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
 }
 
 h1 {
@@ -37,17 +70,18 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid var(--button-border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg);
+  color: var(--text-primary);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--button-hover);
 }
 button:focus,
 button:focus-visible {
