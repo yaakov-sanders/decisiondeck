@@ -11,10 +11,9 @@
   --button-hover: #747bff;
   --card-bg: #ffffff;
   --card-shadow: rgba(0, 0, 0, 0.1);
-
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --background-primary: #242424;
   --background-secondary: #1a1a1a;
   --text-primary: rgba(255, 255, 255, 0.87);
@@ -26,7 +25,6 @@
   --button-hover: #646cff;
   --card-bg: #2a2a2a;
   --card-shadow: rgba(0, 0, 0, 0.2);
-
 }
 
 :root {

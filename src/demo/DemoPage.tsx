@@ -11,4 +11,4 @@ export const DemoPage: React.FC = () => {
       <DecisionDeckView deck={deck} />
     </>
   );
-}; 
+};

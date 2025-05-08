@@ -4,14 +4,14 @@ A plug-and-play, Tinder-like interface framework for making binary decisions on 
 
 ## Features
 
-- **Core OOP Architecture:**  
+- **Core OOP Architecture:**
   - `Card<T>`: Abstract base for any card data.
   - `DecisionDeck<T>`: Manages card stack, swipe logic, and preloading.
-- **Reusable UI:**  
+- **Reusable UI:**
   - `DecisionDeckView`: Generic React component for rendering any deck visually as a swipeable stack.
-- **Demo Implementation:**  
+- **Demo Implementation:**
   - `PlayingCardDeck`: Example deck using standard playing cards.
-- **Modern Stack:**  
+- **Modern Stack:**
   - React + TypeScript + Vite
   - Strict TypeScript config
 
@@ -23,9 +23,13 @@ A plug-and-play, Tinder-like interface framework for making binary decisions on 
 // src/core/Card.ts
 export abstract class Card<T> {
   protected data: T;
-  constructor(data: T) { this.data = data; }
+  constructor(data: T) {
+    this.data = data;
+  }
   abstract getCardComponent(): React.ComponentType;
-  getMetadata() { return { id: this.data.id, type: this.data.type, timestamp: this.data.timestamp }; }
+  getMetadata() {
+    return { id: this.data.id, type: this.data.type, timestamp: this.data.timestamp };
+  }
 }
 
 // src/core/DecisionDeck.ts

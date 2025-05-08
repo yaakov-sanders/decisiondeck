@@ -6,4 +6,4 @@ export const PlayingCardComponent: FC<{ cardData: PlayingCardData }> = ({ cardDa
   <div className="playing-card">
     <img src={cardData.image} alt={`${cardData.value} of ${cardData.suit}`} />
   </div>
-); 
+);

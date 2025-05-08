@@ -31,4 +31,4 @@ export const ThemeToggle: React.FC = () => {
       {isDarkMode ? '☀️' : '🌙'}
     </button>
   );
-}; 
+};

@@ -62,7 +62,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   transform: translateY(-50%);
 }
 
@@ -126,7 +128,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow 0.2s, background 0.2s;
+  transition:
+    box-shadow 0.2s,
+    background 0.2s;
   box-shadow: 0 2px 8px var(--card-shadow);
 }
 
@@ -185,12 +189,16 @@
   width: 320px;
   height: 440px;
   border-radius: 20px;
-  box-shadow: 0 8px 32px var(--card-shadow), 0 2px 8px var(--card-shadow);
+  box-shadow:
+    0 8px 32px var(--card-shadow),
+    0 2px 8px var(--card-shadow);
   background: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .card-back {
@@ -261,7 +269,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px var(--card-shadow);
-  transition: box-shadow 0.2s, background 0.2s;
+  transition:
+    box-shadow 0.2s,
+    background 0.2s;
   position: relative;
   z-index: 2;
 }
@@ -279,7 +289,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
   z-index: 2;
 }
 
@@ -318,4 +330,4 @@
 
 .theme-toggle:active {
   transform: scale(0.95);
-} 
+}

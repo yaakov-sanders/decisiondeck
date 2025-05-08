@@ -10,18 +10,18 @@ export interface BaseCardData {
 
 export abstract class Card<T extends BaseCardData> {
   protected data: T;
-  
+
   constructor(data: T) {
     this.data = data;
   }
-  
+
   // Get the React component that renders this card
   abstract getCardComponent(): ComponentType<{ cardData: T }>;
-  
+
   // Get card metadata for animations/transitions
   getMetadata(): CardMetadata {
     return {
-      id: this.data.id
+      id: this.data.id,
     };
   }
 
@@ -29,4 +29,4 @@ export abstract class Card<T extends BaseCardData> {
   getData(): T {
     return this.data;
   }
-} 
+}
