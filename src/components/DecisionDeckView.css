@@ -134,8 +134,7 @@
   box-shadow: 0 0 0 4px var(--accent-primary);
 }
 
-.decision-deck-loading,
-.decision-deck-empty {
+.decision-deck-loading {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -168,6 +167,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease-out;
+}
+
+.modern-deck-stack.drag-over-left {
+  background-color: rgba(244, 67, 54, 0.2);
+}
+
+.modern-deck-stack.drag-over-right {
+  background-color: rgba(76, 175, 50, 0.2);
 }
 
 .modern-deck-card {
@@ -208,6 +216,37 @@
   gap: 2.5rem;
   margin-top: 0.5rem;
   justify-content: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.drop-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 33%;
+  transition: background-color 0.2s ease-out;
+  z-index: 1;
+  pointer-events: all;
+}
+
+.drop-zone.left {
+  left: 0;
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.drop-zone.right {
+  right: 0;
+  background-color: rgba(76, 175, 50, 0.05);
+}
+
+.drop-zone.left.drag-over {
+  background-color: rgba(244, 67, 54, 0.2);
+}
+
+.drop-zone.right.drag-over {
+  background-color: rgba(76, 175, 50, 0.2);
 }
 
 .modern-swipe-btn {
@@ -223,6 +262,8 @@
   justify-content: center;
   box-shadow: 0 2px 8px var(--card-shadow);
   transition: box-shadow 0.2s, background 0.2s;
+  position: relative;
+  z-index: 2;
 }
 
 .modern-swipe-btn:active {
@@ -238,6 +279,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  z-index: 2;
+}
+
+.stack-card.draggable {
+  cursor: grab;
+  user-select: none;
+}
+
+.stack-card.draggable:active {
+  cursor: grabbing;
 }
 
 .theme-toggle {

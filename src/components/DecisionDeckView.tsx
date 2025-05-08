@@ -14,6 +14,9 @@ export function DecisionDeckView<T extends BaseCardData>({
 }: DecisionDeckViewProps<T>) {
   const [currentCard, setCurrentCard] = useState<Card<T> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+  const [dragOverZone, setDragOverZone] = useState<'left' | 'right' | null>(null);
 
   useEffect(() => {
     const initializeDeck = async () => {
@@ -33,7 +36,6 @@ export function DecisionDeckView<T extends BaseCardData>({
 
   // Get the top 3 cards for the stack effect
   const getTopCards = () => {
-    // Just take the next 3 cards in order
     return deck['cards']?.slice(deck['currentIndex'], deck['currentIndex'] + 3) || [];
   };
 
@@ -53,6 +55,56 @@ export function DecisionDeckView<T extends BaseCardData>({
     }
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    setIsDragging(true);
+    // Set the drag image to be the card itself
+    const cardElement = e.currentTarget as HTMLElement;
+    e.dataTransfer.setDragImage(cardElement, cardElement.offsetWidth / 2, cardElement.offsetHeight / 2);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    setIsDragging(false);
+    setDragPosition({ x: 0, y: 0 });
+    setDragOverZone(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    const rect = e.currentTarget.getBoundingClientRect();
+    
+    // Calculate position relative to the center of the card
+    setDragPosition({
+      x: e.clientX - rect.left - (rect.width / 2),
+      y: e.clientY - rect.top - (rect.height / 2)
+    });
+
+    // Determine which zone we're over
+    const x = e.clientX - rect.left;
+    if (x < rect.width * 0.33) {
+      setDragOverZone('left');
+    } else if (x > rect.width * 0.67) {
+      setDragOverZone('right');
+    } else {
+      setDragOverZone(null);
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    setDragPosition({ x: 0, y: 0 });
+    
+    if (dragOverZone === 'left') {
+      await handleSwipeLeft();
+    } else if (dragOverZone === 'right') {
+      await handleSwipeRight();
+    }
+    
+    setDragOverZone(null);
+  };
+
   // Extracted render function for stack cards
   const renderStackCard = useCallback((card: Card<T>, idx: number) => {
     const CardComponent = card.getCardComponent();
@@ -63,19 +115,32 @@ export function DecisionDeckView<T extends BaseCardData>({
       { z: 1, t: 'translate(-32px, 16px) scale(0.96)' },
     ];
     const { z, t } = offsets[idx] || offsets[2];
+    
+    // Only make the top card draggable
+    const isTopCard = idx === 0;
+    const dragStyle = isTopCard && isDragging ? {
+      transform: `translate(${dragPosition.x}px, ${dragPosition.y}px)`,
+      cursor: 'grabbing',
+      transition: 'none'
+    } : {};
+
     return (
       <div
         key={card.getMetadata().id}
-        className="stack-card"
+        className={`stack-card ${isTopCard ? 'draggable' : ''}`}
         style={{
           zIndex: z,
-          transform: t
+          transform: t,
+          ...dragStyle
         }}
+        draggable={isTopCard}
+        onDragStart={isTopCard ? handleDragStart : undefined}
+        onDragEnd={isTopCard ? handleDragEnd : undefined}
       >
         <CardComponent cardData={card.getData()} />
       </div>
     );
-  }, []);
+  }, [isDragging, dragPosition]);
 
   let content;
   if (isLoading) {
@@ -85,7 +150,11 @@ export function DecisionDeckView<T extends BaseCardData>({
   } else {
     content = (
       <>
-        <div className="modern-deck-stack">
+        <div 
+          className={`modern-deck-stack ${dragOverZone ? `drag-over-${dragOverZone}` : ''}`}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
           {/* Render up to 3 cards for the stack effect, last card visually on top */}
           {topCards.map(renderStackCard)}
         </div>
