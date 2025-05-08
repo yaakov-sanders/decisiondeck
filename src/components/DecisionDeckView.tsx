@@ -23,7 +23,9 @@ export function DecisionDeckView<T extends BaseCardData>({
       try {
         await deck.authenticate();
         await deck.initialize();
-        setCurrentCard(deck.getCurrentCard());
+        // Batch state updates together
+        const card = deck.getCurrentCard();
+        setCurrentCard(card);
         setIsLoading(false);
       } catch (error) {
         console.error('Failed to initialize deck:', error);

@@ -73,94 +73,96 @@ class MockCard extends Card<MockCardData> {
 describe('DecisionDeckView', () => {
   let mockDeck: MockDecisionDeck;
 
-  // Set up a fresh mock deck before each test
   beforeEach(() => {
     mockDeck = new MockDecisionDeck();
   });
 
-  // Test initial loading state
   it('renders loading state initially', () => {
     render(<DecisionDeckView deck={mockDeck} />);
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
-  // Test empty state when no cards are available
   it('renders empty state when no cards are available', async () => {
     const emptyDeck = new MockDecisionDeck([]);
+    render(<DecisionDeckView deck={emptyDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={emptyDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
+    
     await screen.findByTestId('empty-state');
   });
 
-  // Test rendering of the current card
   it('renders the current card', async () => {
+    render(<DecisionDeckView deck={mockDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={mockDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
+    
     await screen.findByTestId('card-1');
   });
 
-  // Test swipe left button functionality
   it('handles swipe left button click', async () => {
+    render(<DecisionDeckView deck={mockDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={mockDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
     
-    // Wait for the first card to appear
     const card1 = await screen.findByTestId('card-1');
     expect(card1).toBeInTheDocument();
     
     const leftButton = await screen.findByLabelText('Swipe Left');
     
     await act(async () => {
-      await fireEvent.click(leftButton);
-      // Wait for any state updates to complete
+      fireEvent.click(leftButton);
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the second card to appear
     const card2 = await screen.findByTestId('card-2');
     expect(card2).toBeInTheDocument();
   });
 
-  // Test swipe right button functionality
   it('handles swipe right button click', async () => {
+    render(<DecisionDeckView deck={mockDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={mockDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
     
-    // Wait for the first card to appear
     const card1 = await screen.findByTestId('card-1');
     expect(card1).toBeInTheDocument();
     
     const rightButton = await screen.findByLabelText('Swipe Right');
     
     await act(async () => {
-      await fireEvent.click(rightButton);
-      // Wait for any state updates to complete
+      fireEvent.click(rightButton);
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the second card to appear
     const card2 = await screen.findByTestId('card-2');
     expect(card2).toBeInTheDocument();
   });
 
-  // Test drag and drop to left zone
   it('handles drag and drop to left', async () => {
+    render(<DecisionDeckView deck={mockDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={mockDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the first card to appear
     const card1 = await screen.findByTestId('card-1');
     expect(card1).toBeInTheDocument();
 
     const stack = card1.parentElement?.parentElement;
     if (!stack) throw new Error('Stack element not found');
 
-    // Mock drag and drop events
     await act(async () => {
       // Start drag
       fireEvent.dragStart(card1, {
@@ -178,30 +180,27 @@ describe('DecisionDeckView', () => {
 
       // Drop
       fireEvent.drop(stack);
-
-      // Wait for any state updates to complete
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the second card to appear
     const card2 = await screen.findByTestId('card-2');
     expect(card2).toBeInTheDocument();
   });
 
-  // Test drag and drop to right zone
   it('handles drag and drop to right', async () => {
+    render(<DecisionDeckView deck={mockDeck} />);
+    
+    // Wait for initialization to complete
     await act(async () => {
-      render(<DecisionDeckView deck={mockDeck} />);
+      await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the first card to appear
     const card1 = await screen.findByTestId('card-1');
     expect(card1).toBeInTheDocument();
 
     const stack = card1.parentElement?.parentElement;
     if (!stack) throw new Error('Stack element not found');
 
-    // Mock drag and drop events
     await act(async () => {
       // Start drag
       fireEvent.dragStart(card1, {
@@ -219,12 +218,9 @@ describe('DecisionDeckView', () => {
 
       // Drop
       fireEvent.drop(stack);
-
-      // Wait for any state updates to complete
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    // Wait for the second card to appear
     const card2 = await screen.findByTestId('card-2');
     expect(card2).toBeInTheDocument();
   });
