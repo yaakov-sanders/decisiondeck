@@ -154,6 +154,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s;
 }
 
 .modern-deck-center-col {
@@ -239,24 +240,6 @@
   pointer-events: all;
 }
 
-.drop-zone.left {
-  left: 0;
-  background-color: rgba(244, 67, 54, 0.05);
-}
-
-.drop-zone.right {
-  right: 0;
-  background-color: rgba(76, 175, 50, 0.05);
-}
-
-.drop-zone.left.drag-over {
-  background-color: rgba(244, 67, 54, 0.2);
-}
-
-.drop-zone.right.drag-over {
-  background-color: rgba(76, 175, 50, 0.2);
-}
-
 .modern-swipe-btn {
   background: var(--button-bg);
   border: none;
@@ -330,4 +313,11 @@
 
 .theme-toggle:active {
   transform: scale(0.95);
+}
+
+.modern-deck-bg.bg-swipe-left {
+  background: rgba(244, 67, 54, 0.05);
+}
+.modern-deck-bg.bg-swipe-right {
+  background: rgba(76, 175, 50, 0.05);
 }

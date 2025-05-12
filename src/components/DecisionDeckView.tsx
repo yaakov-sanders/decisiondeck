@@ -178,11 +178,7 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
   } else {
     content = (
       <>
-        <div
-          className={`modern-deck-stack ${dragState.overZone ? `drag-over-${dragState.overZone}` : ''}`}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
+        <div className={`modern-deck-stack`} onDragOver={handleDragOver} onDrop={handleDrop}>
           {/* Render up to 3 cards for the stack effect, last card visually on top */}
           {topCards.map(renderStackCard)}
         </div>
@@ -194,8 +190,10 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
     );
   }
 
+  const bgClass = dragState.overZone ? `bg-swipe-${dragState.overZone}` : '';
+
   return (
-    <div className="modern-deck-bg">
+    <div className={`modern-deck-bg ${bgClass}`}>
       <div className="modern-deck-center-col">{content}</div>
     </div>
   );
