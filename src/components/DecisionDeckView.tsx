@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Card } from '../core/Card';
 import type { BaseCardData } from '../core/Card';
 import { DecisionDeck } from '../core/DecisionDeck';
+import { SwipeButton, type SwipeDirection } from './SwipeButton';
 import './DecisionDeckView.css';
 import EmptyState from './EmptyState';
 
@@ -9,12 +10,20 @@ interface DecisionDeckViewProps<T extends BaseCardData> {
   deck: DecisionDeck<T>;
 }
 
+interface DragState {
+  isDragging: boolean;
+  position: { x: number; y: number };
+  overZone: SwipeDirection | null;
+}
+
 export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckViewProps<T>) {
   const [currentCard, setCurrentCard] = useState<Card<T> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
-  const [dragOverZone, setDragOverZone] = useState<'left' | 'right' | null>(null);
+  const [dragState, setDragState] = useState<DragState>({
+    isDragging: false,
+    position: { x: 0, y: 0 },
+    overZone: null,
+  });
 
   useEffect(() => {
     const initializeDeck = async () => {
@@ -56,7 +65,7 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
   };
 
   const handleDragStart = (e: React.DragEvent) => {
-    setIsDragging(true);
+    setDragState(prev => ({ ...prev, isDragging: true }));
     // Set the drag image to be the card itself
     const cardElement = e.currentTarget as HTMLElement;
     e.dataTransfer.setDragImage(
@@ -67,10 +76,12 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
     e.dataTransfer.effectAllowed = 'move';
   };
 
-  const handleDragEnd = (e: React.DragEvent) => {
-    setIsDragging(false);
-    setDragPosition({ x: 0, y: 0 });
-    setDragOverZone(null);
+  const handleDragEnd = () => {
+    setDragState({
+      isDragging: false,
+      position: { x: 0, y: 0 },
+      overZone: null,
+    });
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -78,35 +89,42 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
     const rect = e.currentTarget.getBoundingClientRect();
 
     // Calculate position relative to the center of the card
-    setDragPosition({
+    const newPosition = {
       x: e.clientX - rect.left - rect.width / 2,
       y: e.clientY - rect.top - rect.height / 2,
-    });
+    };
 
     // Determine which zone we're over
     const x = e.clientX - rect.left;
+    let newOverZone: SwipeDirection | null = null;
     if (x < rect.width * 0.33) {
-      setDragOverZone('left');
+      newOverZone = 'left';
     } else if (x > rect.width * 0.67) {
-      setDragOverZone('right');
-    } else {
-      setDragOverZone(null);
+      newOverZone = 'right';
     }
+
+    setDragState(prev => ({
+      ...prev,
+      position: newPosition,
+      overZone: newOverZone,
+    }));
   };
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(false);
-    setDragPosition({ x: 0, y: 0 });
 
-    if (dragOverZone === 'left') {
+    if (dragState.overZone === 'left') {
       await handleSwipeLeft();
-    } else if (dragOverZone === 'right') {
+    } else if (dragState.overZone === 'right') {
       await handleSwipeRight();
     }
 
-    setDragOverZone(null);
+    setDragState({
+      isDragging: false,
+      position: { x: 0, y: 0 },
+      overZone: null,
+    });
   };
 
   // Extracted render function for stack cards
@@ -124,9 +142,9 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
       // Only make the top card draggable
       const isTopCard = idx === 0;
       const dragStyle =
-        isTopCard && isDragging
+        isTopCard && dragState.isDragging
           ? {
-              transform: `translate(${dragPosition.x}px, ${dragPosition.y}px)`,
+              transform: `translate(${dragState.position.x}px, ${dragState.position.y}px)`,
               cursor: 'grabbing',
               transition: 'none',
             }
@@ -149,7 +167,7 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
         </div>
       );
     },
-    [isDragging, dragPosition]
+    [dragState]
   );
 
   let content;
@@ -161,7 +179,7 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
     content = (
       <>
         <div
-          className={`modern-deck-stack ${dragOverZone ? `drag-over-${dragOverZone}` : ''}`}
+          className={`modern-deck-stack ${dragState.overZone ? `drag-over-${dragState.overZone}` : ''}`}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
@@ -169,45 +187,8 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
           {topCards.map(renderStackCard)}
         </div>
         <div className="modern-deck-controls">
-          <button
-            className="modern-swipe-btn swipe-left"
-            onClick={handleSwipeLeft}
-            aria-label="Swipe Left"
-          >
-            <svg
-              width="56"
-              height="56"
-              viewBox="0 0 56 56"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="28" cy="28" r="28" fill="#F44336" />
-              <path d="M36 20L20 36" stroke="white" strokeWidth="3.5" strokeLinecap="round" />
-              <path d="M20 20L36 36" stroke="white" strokeWidth="3.5" strokeLinecap="round" />
-            </svg>
-          </button>
-          <button
-            className="modern-swipe-btn swipe-right"
-            onClick={handleSwipeRight}
-            aria-label="Swipe Right"
-          >
-            <svg
-              width="56"
-              height="56"
-              viewBox="0 0 56 56"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="28" cy="28" r="28" fill="#4CAF50" />
-              <path
-                d="M18 28L26 36L38 22"
-                stroke="white"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+          <SwipeButton direction="left" onClick={handleSwipeLeft} />
+          <SwipeButton direction="right" onClick={handleSwipeRight} />
         </div>
       </>
     );
