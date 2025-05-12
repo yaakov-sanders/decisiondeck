@@ -16,6 +16,11 @@ interface DragState {
   overZone: SwipeDirection | null;
 }
 
+interface ButtonSwipeState {
+  isSwiping: boolean;
+  direction: SwipeDirection | null;
+}
+
 export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckViewProps<T>) {
   const [currentCard, setCurrentCard] = useState<Card<T> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +28,10 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
     isDragging: false,
     position: { x: 0, y: 0 },
     overZone: null,
+  });
+  const [buttonSwipeState, setButtonSwipeState] = useState<ButtonSwipeState>({
+    isSwiping: false,
+    direction: null,
   });
 
   useEffect(() => {
@@ -52,15 +61,23 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
 
   const handleSwipeLeft = async () => {
     if (currentCard) {
+      setButtonSwipeState({ isSwiping: true, direction: 'left' });
+      // Wait for animation to complete
+      await new Promise(resolve => setTimeout(resolve, 300));
       await deck.swipeLeft();
       setCurrentCard(deck.getCurrentCard());
+      setButtonSwipeState({ isSwiping: false, direction: null });
     }
   };
 
   const handleSwipeRight = async () => {
     if (currentCard) {
+      setButtonSwipeState({ isSwiping: true, direction: 'right' });
+      // Wait for animation to complete
+      await new Promise(resolve => setTimeout(resolve, 300));
       await deck.swipeRight();
       setCurrentCard(deck.getCurrentCard());
+      setButtonSwipeState({ isSwiping: false, direction: null });
     }
   };
 
@@ -150,10 +167,14 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
             }
           : {};
 
+      // Add button swipe animation class
+      const swipeClass =
+        isTopCard && buttonSwipeState.isSwiping ? `swipe-${buttonSwipeState.direction}` : '';
+
       return (
         <div
           key={card.getMetadata().id}
-          className={`stack-card ${isTopCard ? 'draggable' : ''}`}
+          className={`stack-card ${isTopCard ? 'draggable' : ''} ${swipeClass}`}
           style={{
             zIndex: z,
             transform: t,
@@ -167,7 +188,7 @@ export function DecisionDeckView<T extends BaseCardData>({ deck }: DecisionDeckV
         </div>
       );
     },
-    [dragState]
+    [dragState, buttonSwipeState]
   );
 
   let content;

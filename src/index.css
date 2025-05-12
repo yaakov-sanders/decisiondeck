@@ -11,6 +11,8 @@
   --button-hover: #747bff;
   --card-bg: #ffffff;
   --card-shadow: rgba(0, 0, 0, 0.1);
+  --left-background: rgba(244, 67, 54, 0.2);
+  --right-background: rgba(76, 175, 50, 0.2);
 }
 
 [data-theme='dark'] {
@@ -47,6 +49,7 @@ a {
   color: var(--accent-primary);
   text-decoration: inherit;
 }
+
 a:hover {
   color: var(--accent-hover);
 }
@@ -78,9 +81,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: var(--button-hover);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -91,9 +96,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
