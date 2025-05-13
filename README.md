@@ -50,19 +50,6 @@ const deck = new PlayingCardDeck();
 <DecisionDeckView deck={deck} />;
 ```
 
-### 3. Demo Page
-
-```tsx
-// src/demo/DemoPage.tsx
-import { PlayingCardDeck } from './PlayingCardDeck';
-import { DecisionDeckView } from '../components/DecisionDeckView';
-
-export const DemoPage = () => {
-  const [deck] = React.useState(() => new PlayingCardDeck());
-  return <DecisionDeckView deck={deck} />;
-};
-```
-
 ## Customization
 
 - **Create your own Card and Deck** by extending the base classes.

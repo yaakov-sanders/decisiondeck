@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Card } from '../core/Card';
-import type { BaseCardData } from '../core/Card';
-import { DecisionDeck } from '../core/DecisionDeck';
-import { SwipeButton, type SwipeDirection } from './SwipeButton';
+import { Card } from '../../core/Card.ts';
+import type { BaseCardData } from '../../core/Card.ts';
+import { DecisionDeck } from '../../core/DecisionDeck.ts';
+import { SwipeButton, type SwipeDirection } from '../SwipeButton.tsx';
 import './DecisionDeckView.css';
-import EmptyState from './EmptyState';
+import EmptyState from '../empty-state/EmptyState.tsx';
 
 interface DecisionDeckViewProps<T extends BaseCardData> {
   deck: DecisionDeck<T>;

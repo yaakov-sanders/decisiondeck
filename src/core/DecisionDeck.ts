@@ -6,7 +6,7 @@ export abstract class DecisionDeck<T extends BaseCardData> {
   protected readonly pageSize: number;
   private readonly preloadThreshold: number;
 
-  constructor(pageSize: number = 10, preloadThreshold: number = 5) {
+  protected constructor(pageSize: number = 10, preloadThreshold: number = 5) {
     this.pageSize = pageSize;
     this.preloadThreshold = preloadThreshold;
   }
@@ -19,16 +19,12 @@ export abstract class DecisionDeck<T extends BaseCardData> {
 
   // Decision Handlers
   abstract handleSwipeLeft(card: Card<T>): Promise<void>;
+
   abstract handleSwipeRight(card: Card<T>): Promise<void>;
 
   // Get the current card
   getCurrentCard(): Card<T> | null {
     return this.cards[this.currentIndex] || null;
-  }
-
-  // Get the next card without advancing
-  peekNextCard(): Card<T> | null {
-    return this.cards[this.currentIndex + 1] || null;
   }
 
   // Advance to the next card
@@ -79,10 +75,5 @@ export abstract class DecisionDeck<T extends BaseCardData> {
       await this.handleSwipeRight(currentCard);
       this.advance();
     }
-  }
-
-  // Get the number of remaining cards
-  public getRemainingCards(): number {
-    return this.cards.length - this.currentIndex;
   }
 }

@@ -1,0 +1,30 @@
+.main-nav {
+  background-color: var(--background-primary);
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+}
+
+.main-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.main-nav a:hover {
+  background-color: #e9ecef;
+}
+
+.main-nav a.active {
+  background-color: #0d6efd;
+  color: white;
+}
