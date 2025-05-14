@@ -96,7 +96,7 @@ export class GooglePhotosDeck extends DecisionDeck<GooglePhotoData> {
     authUrl.searchParams.append('client_id', GOOGLE_OAUTH_CONFIG.client_id);
     authUrl.searchParams.append('scope', GOOGLE_OAUTH_CONFIG.scope);
     authUrl.searchParams.append('response_type', GOOGLE_OAUTH_CONFIG.response_type);
-    authUrl.searchParams.append('redirect_uri', window.location.origin);
+    authUrl.searchParams.append('redirect_uri', window.location.href);
 
     // Redirect to Google's OAuth page
     window.location.href = authUrl.toString();
